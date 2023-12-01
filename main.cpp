@@ -35,7 +35,7 @@ int main() {
         //  NOTE: This while loop only saves the variables we care about so that we can create Game objects
         //  I also changed the .csv file to a tab-deliminated csv file. This made it much easier to parse, but I had to modify some data
         //  (the only thing I had to do is remove newlines, because they were causing problems with getline()).
-        //  The edited data set is on github
+        //  The edited data set is shared with you on google drive
 
         stringstream ss(line);
         string tempStr;
