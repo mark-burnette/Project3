@@ -7,11 +7,11 @@
 
 int main() {
     // Open the CSV file
-    std::ifstream file("game_info.csv");
+    ifstream file("game_info.txt");
 
     // Check if the file is open
     if (!file.is_open()) {
-        std::cerr << "Error opening the file!" << std::endl;
+        cerr << "Error opening the file!" << std::endl;
         return 1;
     }
 
@@ -20,6 +20,8 @@ int main() {
     line.clear();
 
     while (getline(file, line)) {
+        cout << line << endl;
+
         string name;
         int metacritic;
         string website;
@@ -29,56 +31,55 @@ int main() {
         string developers;
         string genres;
         string esrb;
-
-        //
-        //  NOTE: This only saves the variables we care about so that we can create Game objects
-        //
+        
+        //  NOTE: This while loop only saves the variables we care about so that we can create Game objects
+        //  I also changed the .csv file to a tab-deliminated csv file. This made it much easier to parse, but I had to modify some data
+        //  (the only thing I had to do is remove newlines, because they were causing problems with getline()).
+        //  The edited data set is on github
 
         stringstream ss(line);
         string tempStr;
-        getline(ss, tempStr, ','); //id
-        getline(ss, tempStr, ','); //slug
+        getline(ss, tempStr, '\t'); //id
+        getline(ss, tempStr, '\t'); //slug
 
-        //TODO: fix, this causes errors because commas and quotes can be contained in the title
-        //this same error can happen for the developers and publishers variable :(
-        getline(ss, name, ','); //name
+        getline(ss, name, '\t'); //name
 
         tempStr.clear();
-        getline(ss, tempStr, ','); //metacritic
+        getline(ss, tempStr, '\t'); //metacritic
         if (tempStr.empty())
             metacritic = 0;
         else
             metacritic = stoi(tempStr);
 
-        getline(ss, tempStr, ','); //released
-        getline(ss, tempStr, ','); //tba
-        getline(ss, tempStr, ','); //updated
+        getline(ss, tempStr, '\t'); //released
+        getline(ss, tempStr, '\t'); //tba
+        getline(ss, tempStr, '\t'); //updated
 
-        getline(ss, website, ','); //website
+        getline(ss, website, '\t'); //website
 
         tempStr.clear();
-        getline(ss, tempStr, ','); //rating
+        getline(ss, tempStr, '\t'); //rating
         rating = stof(tempStr);
 
-        getline(ss, tempStr, ','); //rating_top
-        getline(ss, tempStr, ','); //playtime
-        getline(ss, tempStr, ','); //achievements
+        getline(ss, tempStr, '\t'); //rating_top
+        getline(ss, tempStr, '\t'); //playtime
+        getline(ss, tempStr, '\t'); //achievements
 
         tempStr.clear();
-        getline(ss, tempStr, ','); //ratings_count
+        getline(ss, tempStr, '\t'); //ratings_count
         ratings_count = stoi(tempStr);
 
-        getline(ss, tempStr, ','); //suggestions
-        getline(ss, tempStr, ','); //game_series
-        getline(ss, tempStr, ','); //reviews_count
+        getline(ss, tempStr, '\t'); //suggestions
+        getline(ss, tempStr, '\t'); //game_series
+        getline(ss, tempStr, '\t'); //reviews_count
 
-        getline(ss, platforms, ','); //platforms
-        getline(ss, developers, ','); //developer
-        getline(ss, genres, ','); //genres
+        getline(ss, platforms, '\t'); //platforms
+        getline(ss, developers, '\t'); //developer
+        getline(ss, genres, '\t'); //genres
 
-        getline(ss, tempStr, ','); //publishers
+        getline(ss, tempStr, '\t'); //publishers
 
-        getline(ss, esrb, ','); //esrb
+        getline(ss, esrb, '\t'); //esrb
 
         //TODO: use this data to make game objects
         //TODO: make a vector of all of the game objects
