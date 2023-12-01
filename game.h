@@ -13,8 +13,8 @@ class Game {
     float user_rating;
     int num_user_ratings;
     int num_user_suggestions;
-    int recommendation_score;
     public:
         void printGameInfo();
-        int recommendationScore(); //how we will rank the games, I was thinking with a combination of metacritic & user ratings
+        void setRecScore(); //how we will rank the games, I was thinking with a combination of metacritic & user ratings
+        float recommendation_score; //a score of how likely we are to recommend this game based on what the user entered
 };
