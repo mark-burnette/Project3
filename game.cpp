@@ -2,8 +2,43 @@
 #include "game.h"
 using namespace std;
 
+Game::Game() {
+    name = "";
+    genres = {};
+    website = "";
+    platforms = {};
+    esrb = "";
+    metacritic_rating = 0;
+    user_rating = 0;
+    num_user_ratings = 0;
+}
+
+Game::Game(string name, string genres, string website, string platforms, string esrb, string developers, int metacritic_rating, float user_rating, int num_user_ratings, int num_user_suggestions) {
+    // vector<string> genres;
+    // vector<string> platforms;
+    //vector<string> developers;
+    this->name = name;
+    this->website = website;
+    this->esrb = esrb;
+    this->metacritic_rating = metacritic_rating;
+    this->user_rating = user_rating;
+    this->num_user_ratings = num_user_ratings;
+    //TODO: Finish this constructor!
+}
+
+
 void Game::printGameInfo() {
     cout << "Title: " << name << endl;
+    
+    cout << "Developer(s): ";
+    for (int i=0; i < developers.size(); i++) {
+        cout << developers[i];
+        if (i != developers.size() - 1)
+            cout << ", ";
+        else 
+            cout << endl;
+    }
+
     cout << "Website: ";
     if (website.size() > 0)
         cout << website << endl;
@@ -45,10 +80,9 @@ void Game::printGameInfo() {
         cout << user_rating << " (" << num_user_ratings << " ratings)" << endl;
     else
         cout << "No user ratings found!" << endl;
-
-    cout << "Number of users who recommended this game: " << num_user_suggestions << endl;
 }
 
-void Game::setRecScore() {
-    
+float Game::setRecScore() {
+    float score = 0;
+    return score;
 }
