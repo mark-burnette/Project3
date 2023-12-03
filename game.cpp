@@ -1,5 +1,7 @@
 #include <iostream>
+#include <sstream>
 #include "game.h"
+
 using namespace std;
 
 Game::Game() {
@@ -14,20 +16,42 @@ Game::Game() {
 }
 
 Game::Game(string name, string genres, string website, string platforms, string esrb, string developers, int metacritic_rating, float user_rating, int num_user_ratings, int num_user_suggestions) {
-    // vector<string> genres;
-    // vector<string> platforms;
-    //vector<string> developers;
+    // get genres
+    stringstream ss(genres);
+    string tmp;
+    while (getline(ss, tmp, '|')) {
+        // tmp may be empty as getline() only takes 1 delimiter, but there are 2 '|'s
+        if (tmp.size() != 0)
+            this->genres.push_back(tmp);
+    }
+
+    // get platforms
+    ss.clear();
+    ss.str(platforms);
+    while (getline(ss, tmp, '|')) {
+        if (tmp.size() != 0)
+            this->platforms.push_back(tmp);
+    }
+
+    // get developers
+    ss.clear();
+    ss.str(developers);
+    while (getline(ss, tmp, '|')) {
+        if (tmp.size() != 0)
+            this->developers.push_back(tmp);
+    }
+
     this->name = name;
     this->website = website;
     this->esrb = esrb;
     this->metacritic_rating = metacritic_rating;
     this->user_rating = user_rating;
     this->num_user_ratings = num_user_ratings;
-    //TODO: Finish this constructor!
+    this->suggestions_count = num_user_suggestions; // TODO: change naming
 }
 
-
 void Game::printGameInfo() {
+    cout << endl;
     cout << "Title: " << name << endl;
     
     cout << "Developer(s): ";
@@ -45,7 +69,7 @@ void Game::printGameInfo() {
     else 
         cout << "No website found!" << endl;
     
-    cout << "ESRB Rating: " << endl;
+    cout << "ESRB Rating: ";
     if (esrb.size() > 0)
         cout << esrb << endl;
     else 
@@ -75,6 +99,12 @@ void Game::printGameInfo() {
     else
         cout << "No Metacritic rating found!" << endl;
 
+    cout << "Suggestions Count: ";
+    if (suggestions_count != 0)
+        cout << suggestions_count << endl;
+    else
+        cout << "No suggestion count found!" << endl;
+
     cout << "User Ratings: ";
     if (user_rating != 0)
         cout << user_rating << " (" << num_user_ratings << " ratings)" << endl;
@@ -82,7 +112,11 @@ void Game::printGameInfo() {
         cout << "No user ratings found!" << endl;
 }
 
-float Game::setRecScore() {
+float Game::getRecScore() {
     float score = 0;
+
+    // TODO: suggestion_count + (num genres in common*50) + esrb*25
+    score = suggestions_count;
+
     return score;
 }
