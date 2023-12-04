@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <vector>
 
@@ -6,18 +8,23 @@ using namespace std;
 class Game {
     string name;
     vector<string> genres;
+    int genreMatchCount;
     string website;
     vector<string> platforms;
     vector<string> developers;
     string esrb;
-    int metacritic_rating; // TODO: change naming conventions for consistency (snake_case camelCase)
-    float user_rating;
-    int num_user_ratings;
-    int suggestions_count;
+    bool esrbMatch;
+    int metacritic;
+    float rating;
+    int ratingsCount;
+    int suggestionsCount;
+
+    int recScore;
+
 public:
     Game();
-    Game(string name, string genres, string website, string platforms, string esrb, string developers, int metacritic_rating, float user_rating, int num_user_ratings, int num_user_suggestions);
+    Game(string name, string genres, int genreMatchCount, string website, string platforms, string esrb, bool esrbMatch, string developers, int metacritic, float rating, int ratingsCount, int suggestionsCount);
 
-    void printGameInfo();
-    float getRecScore();
+    void print();
+    int getRecScore();
 };
