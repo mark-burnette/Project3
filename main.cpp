@@ -32,7 +32,7 @@ void promptUser(vector<string>& selectedGenres, vector<string>& selectedESRBRati
         }
 
         cout << endl;
-        cout << "Which genre(s) would you like to see? (select a number, or select 0 to generate recommendations): ";
+        cout << "Which genre(s) would you like to see? (select a number, or select 0 to continue): ";
         cin >> num;
 
         if (num == 0)
