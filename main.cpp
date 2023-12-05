@@ -9,9 +9,7 @@
 #include "game.h"
 #include "sort.h"
 
-// TODO: allow user to choose platforms
-
-void promptUser(vector<string>& selectedGenres, vector<string>& selectedESRBRatings) {
+void promptUser(vector<string>& selectedGenres, vector<string>& selectedESRBRatings, vector<string>& selectedPlatforms) {
     // get user's chosen genre(s)
     vector<string> genres = {"Action", "Adventure", "Arcade", "Board Games", "Card", "Casual", "Educational", "Family", "Fighting", "Indie", "Massively Multiplayer", "Platformer", "Puzzle", "RPG", "Racing", "Shooter", "Simulation", "Sports", "Strategy"};
 
@@ -45,7 +43,9 @@ void promptUser(vector<string>& selectedGenres, vector<string>& selectedESRBRati
             continue;
         }
 
-        selectedGenres.push_back(genres[num-1]);
+        // don't add duplicate genres
+        if (std::find(selectedGenres.begin(), selectedGenres.end(), genres[num-1]) == selectedGenres.end())
+            selectedGenres.push_back(genres[num-1]);
     }
 
     // get user's preferred ESRB rating(s)
@@ -80,7 +80,8 @@ void promptUser(vector<string>& selectedGenres, vector<string>& selectedESRBRati
             continue;
         }
 
-        selectedESRBRatings.push_back(esrbRatings[num-1]);
+        if (std::find(selectedESRBRatings.begin(), selectedESRBRatings.end(), genres[num-1]) == selectedESRBRatings.end())
+            selectedESRBRatings.push_back(esrbRatings[num-1]);
     }
 }
 
@@ -88,7 +89,8 @@ int main() {
     // prompt user for genres/esrb ratings; these vectors will be populated
     vector<string> selectedGenres{};
     vector<string> selectedESRBRatings{};
-    promptUser(selectedGenres, selectedESRBRatings);
+    vector<string> selectedPlatforms{};
+    promptUser(selectedGenres, selectedESRBRatings, selectedPlatforms);
 
     // Open the data file
     ifstream file("game_info.txt");
@@ -156,6 +158,7 @@ int main() {
         getline(ss, tempStr, '\t'); //reviews_count
 
         getline(ss, platforms, '\t'); //platforms
+
         getline(ss, developers, '\t'); //developer
         getline(ss, genres, '\t'); //genres
 
@@ -179,17 +182,12 @@ int main() {
         if (find(selectedESRBRatings.begin(), selectedESRBRatings.end(), esrb) != selectedESRBRatings.end())
            esrbMatch = true; 
 
-        /*
-        // if game does not match ESRB rating, skip
-        if (selectedESRBRatings.size() != 0 && !esrbMatch)
-            continue;
-        */
-
         // make game object and add to list of recommendations
         Game game{name, genres, genreMatchCount, website, platforms, esrb, esrbMatch, developers, metacritic, rating, ratingsCount, suggestionsCount};
         games.push_back(game);
     }
 
+    // get user's chosen algorithm
     cout << endl;
     cout << "Which sorting algorithm would you like to use?" << endl;
     cout << "1) Merge Sort" << endl;
@@ -204,6 +202,7 @@ int main() {
             cout << "Invalid choice. Please enter 1 or 2." << endl;
     }
 
+    // sort data and measure efficiency
     auto start{std::chrono::steady_clock::now()};
 
     if (choice == 1)
@@ -212,16 +211,29 @@ int main() {
         quickSort(games, 0, games.size() - 1);
     
     auto elapsed = std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1>>>(std::chrono::steady_clock::now() - start).count();
-    
-    for (int i = 0; i < 5; i++)
-        games[i].print();
 
     std::cout << endl;
-    if (choice == 1)
-        cout << "Merge Sort";
-    else
-        cout << "Quicksort";
-    std::cout << " took " << elapsed << " seconds." << endl;
+    string choiceStr = (choice == 1) ? "Merge Sort" : "Quicksort";
+    std::cout << choiceStr << " took " << elapsed << " seconds." << endl;
 
+    // print list of recommendations
+    char done = 'y';
+    while (done != 'n')
+    {
+        static int last = 0;
+        if (done == 'y')
+        {
+            for (int i = 0; i < 10; i++, last++)
+                games[last++].print();
+        }
+
+        cout << endl;
+        cout << "Continue showing results? (y/n): ";
+
+        cin >> done;
+        if (done != 'y' && done != 'n')
+            cout << "Invalid choice." << endl;
+    }
+    
     return 0;
 }
