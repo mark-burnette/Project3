@@ -9,7 +9,7 @@
 #include "game.h"
 #include "sort.h"
 
-void promptUser(vector<string>& selectedGenres, vector<string>& selectedESRBRatings, vector<string>& selectedPlatforms) {
+void promptUser(vector<string>& selectedGenres, vector<string>& selectedESRBRatings) {
     // get user's chosen genre(s)
     vector<string> genres = {"Action", "Adventure", "Arcade", "Board Games", "Card", "Casual", "Educational", "Family", "Fighting", "Indie", "Massively Multiplayer", "Platformer", "Puzzle", "RPG", "Racing", "Shooter", "Simulation", "Sports", "Strategy"};
 
@@ -89,8 +89,7 @@ int main() {
     // prompt user for genres/esrb ratings; these vectors will be populated
     vector<string> selectedGenres{};
     vector<string> selectedESRBRatings{};
-    vector<string> selectedPlatforms{};
-    promptUser(selectedGenres, selectedESRBRatings, selectedPlatforms);
+    promptUser(selectedGenres, selectedESRBRatings);
 
     // Open the data file
     ifstream file("game_info.txt");
